@@ -267,6 +267,11 @@ class HealthDataReader {
                         "totalSwimmingStrokeCount": sample.totalSwimmingStrokeCount?.doubleValue(
                             for: HKUnit.count()
                         ),
+                        "avgMets": (sample.metadata?[HKMetadataKeyAverageMETs] as? HKQuantity)?.doubleValue(
+                            for: HKUnit.kilocalorie().unitDivided(
+                                by: HKUnit.gramUnit(with: .kilo).unitMultiplied(by: HKUnit.hour())
+                            )
+                        ),
                         "duration": sample.duration,
                         "date_from": Int(sample.startDate.timeIntervalSince1970 * 1000),
                         "date_to": Int(sample.endDate.timeIntervalSince1970 * 1000),
@@ -562,6 +567,11 @@ class HealthDataReader {
                         ),
                         "totalSwimmingStrokeCount": sample.totalSwimmingStrokeCount?.doubleValue(
                             for: HKUnit.count()
+                        ),
+                        "avgMets": (sample.metadata?[HKMetadataKeyAverageMETs] as? HKQuantity)?.doubleValue(
+                            for: HKUnit.kilocalorie().unitDivided(
+                                by: HKUnit.gramUnit(with: .kilo).unitMultiplied(by: HKUnit.hour())
+                            )
                         ),
                         "duration": sample.duration,
                         "date_from": Int(sample.startDate.timeIntervalSince1970 * 1000),

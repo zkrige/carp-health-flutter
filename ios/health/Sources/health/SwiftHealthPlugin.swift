@@ -532,6 +532,8 @@ public class SwiftHealthPlugin: NSObject, FlutterPlugin {
     private func initializeIOS14Types() {
         dataTypesDict[HealthConstants.ELECTROCARDIOGRAM] = HKSampleType.electrocardiogramType()
         dataTypesDict[HealthConstants.WALKING_SPEED] = HKSampleType.quantityType(forIdentifier: .walkingSpeed)
+        dataTypesDict[HealthConstants.WALKING_DOUBLE_SUPPORT_PERCENTAGE] = HKSampleType.quantityType(forIdentifier: .walkingDoubleSupportPercentage)!
+        dataTypesDict[HealthConstants.WALKING_STEP_LENGTH] = HKSampleType.quantityType(forIdentifier: .walkingStepLength)!
 
         unitDict[HealthConstants.VOLT] = HKUnit.volt()
         unitDict[HealthConstants.INCHES_OF_MERCURY] = HKUnit.inchesOfMercury()
@@ -543,6 +545,10 @@ public class SwiftHealthPlugin: NSObject, FlutterPlugin {
 
         if #available(iOS 14.5, *) {
             dataTypesDict[HealthConstants.APPLE_MOVE_TIME] = HKSampleType.quantityType(forIdentifier: .appleMoveTime)!
+        }
+
+        if #available(iOS 17.0, *) {
+            dataTypesDict[HealthConstants.TIME_IN_DAYLIGHT] = HKSampleType.quantityType(forIdentifier: .timeInDaylight)!
         }
     }
 

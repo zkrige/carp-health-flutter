@@ -144,6 +144,10 @@ class WorkoutHealthValue extends HealthValue {
   /// Might not be available for all workouts.
   int? totalSwimmingStrokeCount;
 
+  /// The average METs (metabolic equivalents) of the workout (iOS only).
+  /// Might not be available for all workouts.
+  num? avgMets;
+
   WorkoutHealthValue({
     required this.workoutActivityType,
     this.totalEnergyBurned,
@@ -154,6 +158,7 @@ class WorkoutHealthValue extends HealthValue {
     this.totalStepsUnit,
     this.totalFlightsClimbed,
     this.totalSwimmingStrokeCount,
+    this.avgMets,
   });
 
   /// Create a [WorkoutHealthValue] based on a health data point from native data format.
@@ -177,6 +182,7 @@ class WorkoutHealthValue extends HealthValue {
     totalFlightsClimbed: dataPoint['totalFlightsClimbed'] != null ? (dataPoint['totalFlightsClimbed'] as num).toInt() : null,
     totalSwimmingStrokeCount:
         dataPoint['totalSwimmingStrokeCount'] != null ? (dataPoint['totalSwimmingStrokeCount'] as num).toInt() : null,
+    avgMets: dataPoint['avgMets'] != null ? (dataPoint['avgMets'] as num) : null,
   );
 
   @override
@@ -196,7 +202,8 @@ class WorkoutHealthValue extends HealthValue {
            totalSteps: $totalSteps,
            totalStepsUnit: ${totalStepsUnit?.name},
            totalFlightsClimbed: $totalFlightsClimbed,
-           totalSwimmingStrokeCount: $totalSwimmingStrokeCount""";
+           totalSwimmingStrokeCount: $totalSwimmingStrokeCount,
+           avgMets: $avgMets""";
 
   @override
   bool operator ==(Object other) =>
@@ -209,7 +216,8 @@ class WorkoutHealthValue extends HealthValue {
       totalSteps == other.totalSteps &&
       totalStepsUnit == other.totalStepsUnit &&
       totalFlightsClimbed == other.totalFlightsClimbed &&
-      totalSwimmingStrokeCount == other.totalSwimmingStrokeCount;
+      totalSwimmingStrokeCount == other.totalSwimmingStrokeCount &&
+      avgMets == other.avgMets;
 
   @override
   int get hashCode => Object.hash(
@@ -222,6 +230,7 @@ class WorkoutHealthValue extends HealthValue {
     totalStepsUnit,
     totalFlightsClimbed,
     totalSwimmingStrokeCount,
+    avgMets,
   );
 }
 
