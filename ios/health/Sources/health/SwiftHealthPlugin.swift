@@ -236,6 +236,7 @@ public class SwiftHealthPlugin: NSObject, FlutterPlugin {
         unitDict[HealthConstants.METER_PER_SECOND] = HKUnit(from: "m/s")
         unitDict[HealthConstants.MILLILITER_PER_KILOGRAM_PER_MINUTE] = HKUnit(from: "ml/kg*min")
         unitDict[HealthConstants.WATT] = HKUnit.watt()
+        unitDict[HealthConstants.COUNT_PER_MINUTE] = HKUnit(from: "count/min")
         unitDict[HealthConstants.LITER_PER_MINUTE] = HKUnit.liter().unitDivided(by: HKUnit.minute())
         unitDict[HealthConstants.KILOCALORIE_PER_HOUR_KILOGRAM] = HKUnit.kilocalorie().unitDivided(by: HKUnit.gramUnit(with: .kilo).unitMultiplied(by: HKUnit.hour()))
         unitDict[HealthConstants.UNKNOWN_UNIT] = HKUnit(from: "")
@@ -314,6 +315,10 @@ public class SwiftHealthPlugin: NSObject, FlutterPlugin {
 
         if #available(iOS 16.0, *) {
             initializeIOS16Types()
+        }
+
+        if #available(iOS 18.0, *) {
+            initializeIOS18Types()
         }
 
         // Concatenate heart events, headache and health data types (both may be empty)
@@ -445,6 +450,13 @@ public class SwiftHealthPlugin: NSObject, FlutterPlugin {
         dataTypesDict[HealthConstants.NUMBER_OF_TIMES_FALLEN] = HKSampleType.quantityType(forIdentifier: .numberOfTimesFallen)!
         dataTypesDict[HealthConstants.BASAL_BODY_TEMPERATURE] = HKSampleType.quantityType(forIdentifier: .basalBodyTemperature)!
         dataTypesDict[HealthConstants.PEAK_EXPIRATORY_FLOW] = HKSampleType.quantityType(forIdentifier: .peakExpiratoryFlowRate)!
+        dataTypesDict[HealthConstants.FORCED_VITAL_CAPACITY] = HKSampleType.quantityType(forIdentifier: .forcedVitalCapacity)!
+        dataTypesDict[HealthConstants.INHALER_USAGE] = HKSampleType.quantityType(forIdentifier: .inhalerUsage)!
+        dataTypesDict[HealthConstants.BLOOD_ALCOHOL_CONTENT] = HKSampleType.quantityType(forIdentifier: .bloodAlcoholContent)!
+        dataTypesDict[HealthConstants.PUSH_COUNT] = HKSampleType.quantityType(forIdentifier: .pushCount)!
+        dataTypesDict[HealthConstants.SWIMMING_STROKE_COUNT] = HKSampleType.quantityType(forIdentifier: .swimmingStrokeCount)!
+        dataTypesDict[HealthConstants.DISTANCE_WHEELCHAIR] = HKSampleType.quantityType(forIdentifier: .distanceWheelchair)!
+        dataTypesDict[HealthConstants.DISTANCE_DOWNHILL_SNOW_SPORTS] = HKSampleType.quantityType(forIdentifier: .distanceDownhillSnowSports)!
         dataTypesDict[HealthConstants.MINDFULNESS] = HKSampleType.categoryType(forIdentifier: .mindfulSession)!
         dataTypesDict[HealthConstants.SLEEP_AWAKE] = HKSampleType.categoryType(forIdentifier: .sleepAnalysis)!
         dataTypesDict[HealthConstants.SLEEP_DEEP] = HKSampleType.categoryType(forIdentifier: .sleepAnalysis)!
@@ -561,11 +573,16 @@ public class SwiftHealthPlugin: NSObject, FlutterPlugin {
 
         if #available(iOS 15.0, *) {
             dataTypesDict[HealthConstants.APPLE_WALKING_STEADINESS] = HKSampleType.quantityType(forIdentifier: .appleWalkingSteadiness)!
+            dataTypesDict[HealthConstants.NUMBER_OF_ALCOHOLIC_BEVERAGES] = HKSampleType.quantityType(forIdentifier: .numberOfAlcoholicBeverages)!
         }
 
         if #available(iOS 17.0, *) {
             dataTypesDict[HealthConstants.TIME_IN_DAYLIGHT] = HKSampleType.quantityType(forIdentifier: .timeInDaylight)!
             dataTypesDict[HealthConstants.PHYSICAL_EFFORT] = HKSampleType.quantityType(forIdentifier: .physicalEffort)!
+            dataTypesDict[HealthConstants.CYCLING_CADENCE] = HKSampleType.quantityType(forIdentifier: .cyclingCadence)!
+            dataTypesDict[HealthConstants.CYCLING_POWER] = HKSampleType.quantityType(forIdentifier: .cyclingPower)!
+            dataTypesDict[HealthConstants.CYCLING_SPEED] = HKSampleType.quantityType(forIdentifier: .cyclingSpeed)!
+            dataTypesDict[HealthConstants.CYCLING_FUNCTIONAL_THRESHOLD_POWER] = HKSampleType.quantityType(forIdentifier: .cyclingFunctionalThresholdPower)!
         }
     }
 
@@ -583,9 +600,27 @@ public class SwiftHealthPlugin: NSObject, FlutterPlugin {
         dataTypesDict[HealthConstants.RUNNING_VERTICAL_OSCILLATION] = HKQuantityType.quantityType(forIdentifier: .runningVerticalOscillation)!
         dataTypesDict[HealthConstants.RUNNING_GROUND_CONTACT_TIME] = HKQuantityType.quantityType(forIdentifier: .runningGroundContactTime)!
         dataTypesDict[HealthConstants.HEART_RATE_RECOVERY_ONE_MINUTE] = HKQuantityType.quantityType(forIdentifier: .heartRateRecoveryOneMinute)!
+        dataTypesDict[HealthConstants.ENVIRONMENTAL_SOUND_REDUCTION] = HKQuantityType.quantityType(forIdentifier: .environmentalSoundReduction)!
 
         dataQuantityTypesDict[HealthConstants.UV_INDEX] = HKQuantityType.quantityType(forIdentifier: .uvExposure)!
         dataQuantityTypesDict[HealthConstants.SLEEP_WRIST_TEMPERATURE] = HKQuantityType.quantityType(forIdentifier: .appleSleepingWristTemperature)!
+    }
+
+    /// Initialize iOS 18 specific data types
+    @available(iOS 18.0, *)
+    private func initializeIOS18Types() {
+        unitDict[HealthConstants.APPLE_EFFORT_SCORE] = HKUnit.appleEffortScore()
+
+        dataTypesDict[HealthConstants.DISTANCE_CROSS_COUNTRY_SKIING] = HKQuantityType.quantityType(forIdentifier: .distanceCrossCountrySkiing)!
+        dataTypesDict[HealthConstants.DISTANCE_PADDLE_SPORTS] = HKQuantityType.quantityType(forIdentifier: .distancePaddleSports)!
+        dataTypesDict[HealthConstants.DISTANCE_ROWING] = HKQuantityType.quantityType(forIdentifier: .distanceRowing)!
+        dataTypesDict[HealthConstants.DISTANCE_SKATING_SPORTS] = HKQuantityType.quantityType(forIdentifier: .distanceSkatingSports)!
+        dataTypesDict[HealthConstants.CROSS_COUNTRY_SKIING_SPEED] = HKQuantityType.quantityType(forIdentifier: .crossCountrySkiingSpeed)!
+        dataTypesDict[HealthConstants.PADDLE_SPORTS_SPEED] = HKQuantityType.quantityType(forIdentifier: .paddleSportsSpeed)!
+        dataTypesDict[HealthConstants.ROWING_SPEED] = HKQuantityType.quantityType(forIdentifier: .rowingSpeed)!
+        dataTypesDict[HealthConstants.WORKOUT_EFFORT_SCORE] = HKQuantityType.quantityType(forIdentifier: .workoutEffortScore)!
+        dataTypesDict[HealthConstants.ESTIMATED_WORKOUT_EFFORT_SCORE] = HKQuantityType.quantityType(forIdentifier: .estimatedWorkoutEffortScore)!
+        dataTypesDict[HealthConstants.APPLE_SLEEPING_BREATHING_DISTURBANCES] = HKQuantityType.quantityType(forIdentifier: .appleSleepingBreathingDisturbances)!
     }
 
     /// Initialize workout activity types
