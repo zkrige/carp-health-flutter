@@ -235,6 +235,9 @@ public class SwiftHealthPlugin: NSObject, FlutterPlugin {
         unitDict[HealthConstants.MILLIGRAM_PER_DECILITER] = HKUnit(from: "mg/dL")
         unitDict[HealthConstants.METER_PER_SECOND] = HKUnit(from: "m/s")
         unitDict[HealthConstants.MILLILITER_PER_KILOGRAM_PER_MINUTE] = HKUnit(from: "ml/kg*min")
+        unitDict[HealthConstants.WATT] = HKUnit.watt()
+        unitDict[HealthConstants.LITER_PER_MINUTE] = HKUnit.liter().unitDivided(by: HKUnit.minute())
+        unitDict[HealthConstants.KILOCALORIE_PER_HOUR_KILOGRAM] = HKUnit.kilocalorie().unitDivided(by: HKUnit.gramUnit(with: .kilo).unitMultiplied(by: HKUnit.hour()))
         unitDict[HealthConstants.UNKNOWN_UNIT] = HKUnit(from: "")
         unitDict[HealthConstants.NO_UNIT] = HKUnit(from: "")
 
@@ -437,6 +440,11 @@ public class SwiftHealthPlugin: NSObject, FlutterPlugin {
         dataTypesDict[HealthConstants.DISTANCE_SWIMMING] = HKSampleType.quantityType(forIdentifier: .distanceSwimming)!
         dataTypesDict[HealthConstants.DISTANCE_CYCLING] = HKSampleType.quantityType(forIdentifier: .distanceCycling)!
         dataTypesDict[HealthConstants.FLIGHTS_CLIMBED] = HKSampleType.quantityType(forIdentifier: .flightsClimbed)!
+        dataTypesDict[HealthConstants.ENVIRONMENTAL_AUDIO_EXPOSURE] = HKSampleType.quantityType(forIdentifier: .environmentalAudioExposure)!
+        dataTypesDict[HealthConstants.HEADPHONE_AUDIO_EXPOSURE] = HKSampleType.quantityType(forIdentifier: .headphoneAudioExposure)!
+        dataTypesDict[HealthConstants.NUMBER_OF_TIMES_FALLEN] = HKSampleType.quantityType(forIdentifier: .numberOfTimesFallen)!
+        dataTypesDict[HealthConstants.BASAL_BODY_TEMPERATURE] = HKSampleType.quantityType(forIdentifier: .basalBodyTemperature)!
+        dataTypesDict[HealthConstants.PEAK_EXPIRATORY_FLOW] = HKSampleType.quantityType(forIdentifier: .peakExpiratoryFlowRate)!
         dataTypesDict[HealthConstants.MINDFULNESS] = HKSampleType.categoryType(forIdentifier: .mindfulSession)!
         dataTypesDict[HealthConstants.SLEEP_AWAKE] = HKSampleType.categoryType(forIdentifier: .sleepAnalysis)!
         dataTypesDict[HealthConstants.SLEEP_DEEP] = HKSampleType.categoryType(forIdentifier: .sleepAnalysis)!
@@ -534,6 +542,10 @@ public class SwiftHealthPlugin: NSObject, FlutterPlugin {
         dataTypesDict[HealthConstants.WALKING_SPEED] = HKSampleType.quantityType(forIdentifier: .walkingSpeed)
         dataTypesDict[HealthConstants.WALKING_DOUBLE_SUPPORT_PERCENTAGE] = HKSampleType.quantityType(forIdentifier: .walkingDoubleSupportPercentage)!
         dataTypesDict[HealthConstants.WALKING_STEP_LENGTH] = HKSampleType.quantityType(forIdentifier: .walkingStepLength)!
+        dataTypesDict[HealthConstants.WALKING_ASYMMETRY_PERCENTAGE] = HKSampleType.quantityType(forIdentifier: .walkingAsymmetryPercentage)!
+        dataTypesDict[HealthConstants.STAIR_ASCENT_SPEED] = HKSampleType.quantityType(forIdentifier: .stairAscentSpeed)!
+        dataTypesDict[HealthConstants.STAIR_DESCENT_SPEED] = HKSampleType.quantityType(forIdentifier: .stairDescentSpeed)!
+        dataTypesDict[HealthConstants.SIX_MINUTE_WALK_TEST_DISTANCE] = HKSampleType.quantityType(forIdentifier: .sixMinuteWalkTestDistance)!
 
         unitDict[HealthConstants.VOLT] = HKUnit.volt()
         unitDict[HealthConstants.INCHES_OF_MERCURY] = HKUnit.inchesOfMercury()
@@ -547,8 +559,13 @@ public class SwiftHealthPlugin: NSObject, FlutterPlugin {
             dataTypesDict[HealthConstants.APPLE_MOVE_TIME] = HKSampleType.quantityType(forIdentifier: .appleMoveTime)!
         }
 
+        if #available(iOS 15.0, *) {
+            dataTypesDict[HealthConstants.APPLE_WALKING_STEADINESS] = HKSampleType.quantityType(forIdentifier: .appleWalkingSteadiness)!
+        }
+
         if #available(iOS 17.0, *) {
             dataTypesDict[HealthConstants.TIME_IN_DAYLIGHT] = HKSampleType.quantityType(forIdentifier: .timeInDaylight)!
+            dataTypesDict[HealthConstants.PHYSICAL_EFFORT] = HKSampleType.quantityType(forIdentifier: .physicalEffort)!
         }
     }
 
@@ -560,6 +577,12 @@ public class SwiftHealthPlugin: NSObject, FlutterPlugin {
         dataTypesDict[HealthConstants.UNDERWATER_DEPTH] = HKQuantityType.quantityType(forIdentifier: .underwaterDepth)!
         dataTypesDict[HealthConstants.UV_INDEX] = HKQuantityType.quantityType(forIdentifier: .uvExposure)!
         dataTypesDict[HealthConstants.SLEEP_WRIST_TEMPERATURE] = HKQuantityType.quantityType(forIdentifier: .appleSleepingWristTemperature)!
+        dataTypesDict[HealthConstants.RUNNING_POWER] = HKQuantityType.quantityType(forIdentifier: .runningPower)!
+        dataTypesDict[HealthConstants.RUNNING_SPEED] = HKQuantityType.quantityType(forIdentifier: .runningSpeed)!
+        dataTypesDict[HealthConstants.RUNNING_STRIDE_LENGTH] = HKQuantityType.quantityType(forIdentifier: .runningStrideLength)!
+        dataTypesDict[HealthConstants.RUNNING_VERTICAL_OSCILLATION] = HKQuantityType.quantityType(forIdentifier: .runningVerticalOscillation)!
+        dataTypesDict[HealthConstants.RUNNING_GROUND_CONTACT_TIME] = HKQuantityType.quantityType(forIdentifier: .runningGroundContactTime)!
+        dataTypesDict[HealthConstants.HEART_RATE_RECOVERY_ONE_MINUTE] = HKQuantityType.quantityType(forIdentifier: .heartRateRecoveryOneMinute)!
 
         dataQuantityTypesDict[HealthConstants.UV_INDEX] = HKQuantityType.quantityType(forIdentifier: .uvExposure)!
         dataQuantityTypesDict[HealthConstants.SLEEP_WRIST_TEMPERATURE] = HKQuantityType.quantityType(forIdentifier: .appleSleepingWristTemperature)!
