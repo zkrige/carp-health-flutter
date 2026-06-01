@@ -37,15 +37,17 @@ class HKBackgroundDeliveryWorker {
         let channel = FlutterMethodChannel(name: BackgroundChannel.name, binaryMessenger: engine.binaryMessenger)
         backgroundChannel = channel
 
-        channel.setMethodCallHandler { [weak self] call, result in
+        // Strong self keeps the worker and its engine alive across the Dart round-trip;
+        // clearing backgroundChannel below releases this closure, breaking the cycle.
+        channel.setMethodCallHandler { call, result in
             guard call.method == BackgroundChannel.syncComplete else {
                 result(FlutterMethodNotImplemented)
                 return
             }
             result(nil)
-            self?.flutterEngine?.destroyContext()
-            self?.flutterEngine = nil
-            self?.backgroundChannel = nil
+            self.flutterEngine?.destroyContext()
+            self.flutterEngine = nil
+            self.backgroundChannel = nil
             completionHandler()
         }
 

@@ -11,6 +11,9 @@ class HKObserverManager {
     )
 
     private var activeQueries: [HKObserverQuery] = []
+    // Workers are retained until their headless engine signals syncComplete; without this
+    // the temporary worker is deallocated when run() returns, tearing down the engine mid-sync.
+    private var activeWorkers: [ObjectIdentifier: HKBackgroundDeliveryWorker] = [:]
     private weak var healthStore: HKHealthStore?
 
     private init() {}
@@ -67,7 +70,13 @@ class HKObserverManager {
                 return
             }
             DispatchQueue.main.async {
-                HKBackgroundDeliveryWorker().run { hkCompletion() }
+                let worker = HKBackgroundDeliveryWorker()
+                let workerKey = ObjectIdentifier(worker)
+                HKObserverManager.shared.activeWorkers[workerKey] = worker
+                worker.run {
+                    hkCompletion()
+                    HKObserverManager.shared.activeWorkers[workerKey] = nil
+                }
             }
         }
 
