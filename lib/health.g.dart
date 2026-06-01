@@ -353,6 +353,15 @@ WorkoutHealthValue _$WorkoutHealthValueFromJson(Map<String, dynamic> json) =>
       avgMets: json['avgMets'] as num?,
       elevationAscended: json['elevationAscended'] as num?,
       elevationDescended: json['elevationDescended'] as num?,
+      duration: json['duration'] as num?,
+      isIndoor: json['isIndoor'] as bool?,
+      weatherTemperature: json['weatherTemperature'] as num?,
+      weatherHumidity: json['weatherHumidity'] as num?,
+      averageSpeed: json['averageSpeed'] as num?,
+      maximumSpeed: json['maximumSpeed'] as num?,
+      workoutEvents: (json['workoutEvents'] as List<dynamic>?)
+          ?.map((e) => WorkoutEvent.fromJson(e as Map<String, dynamic>))
+          .toList(),
     )..$type = json['__type'] as String?;
 
 Map<String, dynamic> _$WorkoutHealthValueToJson(WorkoutHealthValue instance) =>
@@ -372,6 +381,13 @@ Map<String, dynamic> _$WorkoutHealthValueToJson(WorkoutHealthValue instance) =>
       'avgMets': ?instance.avgMets,
       'elevationAscended': ?instance.elevationAscended,
       'elevationDescended': ?instance.elevationDescended,
+      'duration': ?instance.duration,
+      'isIndoor': ?instance.isIndoor,
+      'weatherTemperature': ?instance.weatherTemperature,
+      'weatherHumidity': ?instance.weatherHumidity,
+      'averageSpeed': ?instance.averageSpeed,
+      'maximumSpeed': ?instance.maximumSpeed,
+      'workoutEvents': ?instance.workoutEvents?.map((e) => e.toJson()).toList(),
     };
 
 const _$HealthWorkoutActivityTypeEnumMap = {
@@ -479,6 +495,18 @@ const _$HealthWorkoutActivityTypeEnumMap = {
   HealthWorkoutActivityType.WHEELCHAIR: 'WHEELCHAIR',
   HealthWorkoutActivityType.OTHER: 'OTHER',
 };
+
+WorkoutEvent _$WorkoutEventFromJson(Map<String, dynamic> json) => WorkoutEvent(
+  type: (json['type'] as num).toInt(),
+  startDate: DateTime.parse(json['startDate'] as String),
+)..$type = json['__type'] as String?;
+
+Map<String, dynamic> _$WorkoutEventToJson(WorkoutEvent instance) =>
+    <String, dynamic>{
+      '__type': ?instance.$type,
+      'type': instance.type,
+      'startDate': instance.startDate.toIso8601String(),
+    };
 
 WorkoutRouteLocation _$WorkoutRouteLocationFromJson(
   Map<String, dynamic> json,
