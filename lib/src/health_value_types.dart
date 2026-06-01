@@ -148,6 +148,14 @@ class WorkoutHealthValue extends HealthValue {
   /// Might not be available for all workouts.
   num? avgMets;
 
+  /// The barometric elevation ascended during the workout in meters (iOS only).
+  /// Might not be available for all workouts.
+  num? elevationAscended;
+
+  /// The barometric elevation descended during the workout in meters (iOS only).
+  /// Might not be available for all workouts.
+  num? elevationDescended;
+
   WorkoutHealthValue({
     required this.workoutActivityType,
     this.totalEnergyBurned,
@@ -159,6 +167,8 @@ class WorkoutHealthValue extends HealthValue {
     this.totalFlightsClimbed,
     this.totalSwimmingStrokeCount,
     this.avgMets,
+    this.elevationAscended,
+    this.elevationDescended,
   });
 
   /// Create a [WorkoutHealthValue] based on a health data point from native data format.
@@ -183,6 +193,8 @@ class WorkoutHealthValue extends HealthValue {
     totalSwimmingStrokeCount:
         dataPoint['totalSwimmingStrokeCount'] != null ? (dataPoint['totalSwimmingStrokeCount'] as num).toInt() : null,
     avgMets: dataPoint['avgMets'] != null ? (dataPoint['avgMets'] as num) : null,
+    elevationAscended: dataPoint['elevationAscended'] != null ? (dataPoint['elevationAscended'] as num) : null,
+    elevationDescended: dataPoint['elevationDescended'] != null ? (dataPoint['elevationDescended'] as num) : null,
   );
 
   @override
@@ -203,7 +215,9 @@ class WorkoutHealthValue extends HealthValue {
            totalStepsUnit: ${totalStepsUnit?.name},
            totalFlightsClimbed: $totalFlightsClimbed,
            totalSwimmingStrokeCount: $totalSwimmingStrokeCount,
-           avgMets: $avgMets""";
+           avgMets: $avgMets,
+           elevationAscended: $elevationAscended,
+           elevationDescended: $elevationDescended""";
 
   @override
   bool operator ==(Object other) =>
@@ -217,7 +231,9 @@ class WorkoutHealthValue extends HealthValue {
       totalStepsUnit == other.totalStepsUnit &&
       totalFlightsClimbed == other.totalFlightsClimbed &&
       totalSwimmingStrokeCount == other.totalSwimmingStrokeCount &&
-      avgMets == other.avgMets;
+      avgMets == other.avgMets &&
+      elevationAscended == other.elevationAscended &&
+      elevationDescended == other.elevationDescended;
 
   @override
   int get hashCode => Object.hash(
@@ -231,6 +247,8 @@ class WorkoutHealthValue extends HealthValue {
     totalFlightsClimbed,
     totalSwimmingStrokeCount,
     avgMets,
+    elevationAscended,
+    elevationDescended,
   );
 }
 

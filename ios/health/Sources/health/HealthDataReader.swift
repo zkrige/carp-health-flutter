@@ -272,6 +272,8 @@ class HealthDataReader {
                                 by: HKUnit.gramUnit(with: .kilo).unitMultiplied(by: HKUnit.hour())
                             )
                         ),
+                        "elevationAscended": (sample.metadata?[HKMetadataKeyElevationAscended] as? HKQuantity)?.doubleValue(for: HKUnit.meter()),
+                        "elevationDescended": (sample.metadata?[HKMetadataKeyElevationDescended] as? HKQuantity)?.doubleValue(for: HKUnit.meter()),
                         "duration": sample.duration,
                         "date_from": Int(sample.startDate.timeIntervalSince1970 * 1000),
                         "date_to": Int(sample.endDate.timeIntervalSince1970 * 1000),
@@ -573,6 +575,8 @@ class HealthDataReader {
                                 by: HKUnit.gramUnit(with: .kilo).unitMultiplied(by: HKUnit.hour())
                             )
                         ),
+                        "elevationAscended": (sample.metadata?[HKMetadataKeyElevationAscended] as? HKQuantity)?.doubleValue(for: HKUnit.meter()),
+                        "elevationDescended": (sample.metadata?[HKMetadataKeyElevationDescended] as? HKQuantity)?.doubleValue(for: HKUnit.meter()),
                         "duration": sample.duration,
                         "date_from": Int(sample.startDate.timeIntervalSince1970 * 1000),
                         "date_to": Int(sample.endDate.timeIntervalSince1970 * 1000),
