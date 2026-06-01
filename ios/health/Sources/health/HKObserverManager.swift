@@ -1,6 +1,7 @@
 import Foundation
 import HealthKit
 import os
+import UIKit
 
 class HKObserverManager {
     static let shared = HKObserverManager()
@@ -70,6 +71,14 @@ class HKObserverManager {
                 return
             }
             DispatchQueue.main.async {
+                // HKObserverQuery fires in the foreground too; spinning a headless FlutterEngine
+                // while the live app is running re-runs plugin/Firebase init and crashes. The
+                // foreground app already syncs via its normal in-app path, so only the background
+                // case needs the headless engine.
+                guard UIApplication.shared.applicationState == .background else {
+                    hkCompletion()
+                    return
+                }
                 let worker = HKBackgroundDeliveryWorker()
                 let workerKey = ObjectIdentifier(worker)
                 HKObserverManager.shared.activeWorkers[workerKey] = worker
