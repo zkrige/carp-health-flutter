@@ -14,8 +14,13 @@ class HKBackgroundDeliveryWorker {
         category: "HealthKitBGDelivery"
     )
 
+    // iOS gives a background-delivery handler a limited execution budget; fire teardown
+    // before it expires if the Dart entrypoint never calls syncComplete.
+    private static let watchdogTimeout: TimeInterval = 25
+
     private var flutterEngine: FlutterEngine?
     private var backgroundChannel: FlutterMethodChannel?
+    private var hasFinished = false
 
     /// Spins up a headless Flutter engine to run the registered Dart callback.
     /// MUST be invoked on the main thread (HKObserverQuery handlers fire off-main).
@@ -45,12 +50,24 @@ class HKBackgroundDeliveryWorker {
                 return
             }
             result(nil)
-            self.flutterEngine?.destroyContext()
-            self.flutterEngine = nil
-            self.backgroundChannel = nil
-            completionHandler()
+            self.finish(completionHandler)
         }
 
         channel.invokeMethod(BackgroundChannel.initialized, arguments: nil)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + HKBackgroundDeliveryWorker.watchdogTimeout) {
+            self.finish(completionHandler)
+        }
+    }
+
+    /// Tears down the engine and signals completion exactly once, whether triggered by
+    /// syncComplete or the watchdog timeout (whichever arrives first wins via hasFinished).
+    private func finish(_ completionHandler: @escaping () -> Void) {
+        guard !hasFinished else { return }
+        hasFinished = true
+        flutterEngine?.destroyContext()
+        flutterEngine = nil
+        backgroundChannel = nil
+        completionHandler()
     }
 }
