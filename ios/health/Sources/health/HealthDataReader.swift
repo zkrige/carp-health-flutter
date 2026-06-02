@@ -1022,9 +1022,14 @@ class HealthDataReader {
             if location.horizontalAccuracy >= 0 {
                 entry["horizontalAccuracy"] = location.horizontalAccuracy
             }
+            // Always emit altitude. Apple Watch GPS routinely flags
+            // verticalAccuracy < 0 (estimate marked invalid) while the altitude
+            // value itself is usable; gating altitude on it left routes with no
+            // altitude, so cumulative descent (and the GPS elevation fallback)
+            // had nothing to sum.
+            entry["altitude"] = location.altitude
             if location.verticalAccuracy >= 0 {
                 entry["verticalAccuracy"] = location.verticalAccuracy
-                entry["altitude"] = location.altitude
             }
             if location.speed >= 0 {
                 entry["speed"] = location.speed
