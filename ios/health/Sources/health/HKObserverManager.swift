@@ -46,9 +46,10 @@ class HKObserverManager {
         configure(healthStore: healthStore, typeNames: storedTypes, dataTypesDict: dataTypesDict)
     }
 
-    // HealthKit rejects background delivery for workout, audiogram, series and route types.
+    // HealthKit supports background delivery for HKWorkoutType (a regular HKSample),
+    // so a finished workout can wake the app. Only series types (HKWorkoutRoute),
+    // audiograms and ECGs are genuinely unsupported.
     private func isBackgroundDeliverySupported(_ sampleType: HKSampleType) -> Bool {
-        if sampleType is HKWorkoutType { return false }
         if sampleType is HKAudiogramSampleType { return false }
         if sampleType is HKSeriesType { return false }
         if #available(iOS 14.0, *), sampleType is HKElectrocardiogramType { return false }
@@ -56,7 +57,7 @@ class HKObserverManager {
     }
 
     private func registerObserver(healthStore: HKHealthStore, sampleType: HKSampleType, typeName: String) {
-        healthStore.enableBackgroundDelivery(for: sampleType, frequency: .hourly) { success, error in
+        healthStore.enableBackgroundDelivery(for: sampleType, frequency: .immediate) { success, error in
             if let error = error {
                 os_log("enableBackgroundDelivery failed for %{public}@: %{public}@", log: HKObserverManager.log, type: .error, typeName, error.localizedDescription)
             } else {
