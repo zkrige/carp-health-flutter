@@ -37,7 +37,7 @@ class HKBackgroundDeliveryWorker {
         flutterEngine = engine
 
         engine.run(withEntrypoint: info.callbackName, libraryURI: info.callbackLibraryPath)
-        SwiftHealthPlugin.pluginRegistrantCallback?(engine)
+        HealthPlugin.pluginRegistrantCallback?(engine)
 
         let channel = FlutterMethodChannel(name: BackgroundChannel.name, binaryMessenger: engine.binaryMessenger)
         backgroundChannel = channel

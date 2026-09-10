@@ -61,7 +61,7 @@ class HKObserverManager {
 
     func reRegisterFromStored(healthStore: HKHealthStore, dataTypesDict: [String: HKSampleType]) {
         // A background-delivery engine runs the host app's plugin registrant, which re-enters
-        // SwiftHealthPlugin.register(with:). Re-arming from there would stop and re-execute the
+        // HealthPlugin.register(with:). Re-arming from there would stop and re-execute the
         // live queries from inside the observer callback that is currently delivering, and
         // -[HKQuery deactivate] barrier-syncs onto that same queue and deadlocks. Observers
         // already exist in that case, so there is nothing to re-arm.

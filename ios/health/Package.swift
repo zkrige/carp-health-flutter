@@ -11,11 +11,15 @@ let package = Package(
     products: [
         .library(name: "health", targets: ["health"])
     ],
-    dependencies: [],
+    dependencies: [
+        .package(name: "FlutterFramework", path: "../FlutterFramework")
+    ],
     targets: [
         .target(
             name: "health",
-            dependencies: [],
+            dependencies: [
+                .product(name: "FlutterFramework", package: "FlutterFramework")
+            ],
             linkerSettings: [
                 .linkedFramework("HealthKit")
             ]

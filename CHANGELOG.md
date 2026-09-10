@@ -1,6 +1,13 @@
-## Unreleased
+## Unreleased (fork)
 
-* iOS: Add Swift Package Manager support - issue [#480](https://github.com/carp-dk/carp-health-flutter/issues/480). The plugin can now be consumed via SPM in addition to CocoaPods. iOS sources have been moved to `ios/health/Sources/health/` and the small Objective-C registration shim has been replaced with a Swift `HealthPlugin` class annotated `@objc(HealthPlugin)` so the existing `pluginClass: HealthPlugin` continues to resolve for both build systems.
+* iOS: Raise the minimum deployment target to 16.0. This fork calls `HKUnit.watt()`, which is iOS 16+; CocoaPods consumers hid the mismatch by forcing `IPHONEOS_DEPLOYMENT_TARGET` in a post_install hook, but Swift Package Manager honours the declared platform.
+
+## 13.3.2
+
+* Write data now returns UUID of records - PR [#448](https://github.com/carp-dk/carp-health-flutter/pull/448)
+* Fix [#502](https://github.com/carp-dk/carp-health-flutter/issues/502)
+* iOS: Fix [#480](https://github.com/carp-dk/carp-health-flutter/issues/480) - PR [#504](https://github.com/carp-dk/carp-health-flutter/pull/504) - the native plugin class is now `HealthPlugin` (previously `SwiftHealthPlugin` behind an Objective-C shim) - apps using the generated plugin registrant are unaffected
+* iOS: Raise the minimum deployment target to 15.0
 
 ## 13.3.1
 

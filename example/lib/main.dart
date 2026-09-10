@@ -430,6 +430,45 @@ class HealthAppState extends State<HealthApp> {
     }
   }
 
+  // Add single steps data (health data)
+  Future<void> addSingleHealthData() async {
+    final now = DateTime.now();
+    final earlier = now.subtract(const Duration(minutes: 20));
+
+    final uuid = await health.writeHealthDataUUID(
+      value: 2130,
+      type: HealthDataType.STEPS,
+      startTime: earlier,
+      endTime: now,
+      recordingMethod: RecordingMethod.manual,
+    );
+
+    bool success = uuid != null;
+    setState(() {
+      _state = success ? AppState.DATA_ADDED : AppState.DATA_NOT_ADDED;
+    });
+  }
+
+  // Add single running data (workout data)
+  Future<void> addSingleWorkoutData() async {
+    final now = DateTime.now();
+    final earlier = now.subtract(const Duration(minutes: 20));
+
+    final uuid = await health.writeWorkoutDataUUID(
+      activityType: HealthWorkoutActivityType.RUNNING,
+      title: "New RUNNING activity",
+      start: earlier,
+      end: now,
+      totalDistance: 2430,
+      totalEnergyBurned: 400,
+    );
+
+    bool success = uuid != null;
+    setState(() {
+      _state = success ? AppState.DATA_ADDED : AppState.DATA_NOT_ADDED;
+    });
+  }
+
   /// Add some random health data.
   /// Note that you should ensure that you have permissions to add the
   /// following data types.
@@ -1187,14 +1226,31 @@ class HealthAppState extends State<HealthApp> {
                       TextButton(
                         onPressed: addData,
                         style: const ButtonStyle(
-                          backgroundColor: WidgetStatePropertyAll(Colors.blue),
-                        ),
-                        child: const Text(
-                          "Add Data",
-                          style: TextStyle(color: Colors.white),
-                        ),
+                            backgroundColor:
+                                WidgetStatePropertyAll(Colors.blue)),
+                        child: const Text("Add Data",
+                            style: TextStyle(color: Colors.white))),
+                    TextButton(
+                      onPressed: addSingleHealthData,
+                      style: const ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll(Colors.blue),
                       ),
-                      if (Platform.isIOS || Platform.isAndroid)
+                      child: const Text(
+                        "Add Steps Data",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: addSingleWorkoutData,
+                      style: const ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll(Colors.blue),
+                      ),
+                      child: const Text(
+                        "Add Running Data",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    if (Platform.isIOS || Platform.isAndroid)
                         TextButton(
                           onPressed: writeWorkoutRoute,
                           style: const ButtonStyle(
@@ -1207,7 +1263,7 @@ class HealthAppState extends State<HealthApp> {
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
-                      TextButton(
+                    TextButton(
                         onPressed: deleteData,
                         style: const ButtonStyle(
                           backgroundColor: WidgetStatePropertyAll(Colors.blue),

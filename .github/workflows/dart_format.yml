@@ -78,5 +78,5 @@
 #         run: brew install swiftformat
 #       - name: Format Swift
 #         run: |
-#           swiftformat ios/Classes
+#           swiftformat ios/health/Sources
 #           git diff --exit-code
