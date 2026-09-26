@@ -267,6 +267,24 @@ class HealthDataReader {
                         "totalSwimmingStrokeCount": sample.totalSwimmingStrokeCount?.doubleValue(
                             for: HKUnit.count()
                         ),
+                        "avgMets": (sample.metadata?[HKMetadataKeyAverageMETs] as? HKQuantity)?.doubleValue(
+                            for: HKUnit.kilocalorie().unitDivided(
+                                by: HKUnit.gramUnit(with: .kilo).unitMultiplied(by: HKUnit.hour())
+                            )
+                        ),
+                        "elevationAscended": (sample.metadata?[HKMetadataKeyElevationAscended] as? HKQuantity)?.doubleValue(for: HKUnit.meter()),
+                        "elevationDescended": (sample.metadata?[HKMetadataKeyElevationDescended] as? HKQuantity)?.doubleValue(for: HKUnit.meter()),
+                        "isIndoor": (sample.metadata?[HKMetadataKeyIndoorWorkout] as? Bool),
+                        "weatherTemperature": (sample.metadata?[HKMetadataKeyWeatherTemperature] as? HKQuantity)?.doubleValue(for: HKUnit.degreeCelsius()),
+                        "weatherHumidity": (sample.metadata?[HKMetadataKeyWeatherHumidity] as? HKQuantity)?.doubleValue(for: HKUnit.percent()),
+                        "averageSpeed": (sample.metadata?[HKMetadataKeyAverageSpeed] as? HKQuantity)?.doubleValue(for: HKUnit.meter().unitDivided(by: HKUnit.second())),
+                        "maximumSpeed": (sample.metadata?[HKMetadataKeyMaximumSpeed] as? HKQuantity)?.doubleValue(for: HKUnit.meter().unitDivided(by: HKUnit.second())),
+                        "workoutEvents": sample.workoutEvents?.map {
+                            [
+                                "type": $0.type.rawValue,
+                                "startDate": Int($0.dateInterval.start.timeIntervalSince1970 * 1000),
+                            ]
+                        },
                         "duration": sample.duration,
                         "date_from": Int(sample.startDate.timeIntervalSince1970 * 1000),
                         "date_to": Int(sample.endDate.timeIntervalSince1970 * 1000),
@@ -563,6 +581,24 @@ class HealthDataReader {
                         "totalSwimmingStrokeCount": sample.totalSwimmingStrokeCount?.doubleValue(
                             for: HKUnit.count()
                         ),
+                        "avgMets": (sample.metadata?[HKMetadataKeyAverageMETs] as? HKQuantity)?.doubleValue(
+                            for: HKUnit.kilocalorie().unitDivided(
+                                by: HKUnit.gramUnit(with: .kilo).unitMultiplied(by: HKUnit.hour())
+                            )
+                        ),
+                        "elevationAscended": (sample.metadata?[HKMetadataKeyElevationAscended] as? HKQuantity)?.doubleValue(for: HKUnit.meter()),
+                        "elevationDescended": (sample.metadata?[HKMetadataKeyElevationDescended] as? HKQuantity)?.doubleValue(for: HKUnit.meter()),
+                        "isIndoor": (sample.metadata?[HKMetadataKeyIndoorWorkout] as? Bool),
+                        "weatherTemperature": (sample.metadata?[HKMetadataKeyWeatherTemperature] as? HKQuantity)?.doubleValue(for: HKUnit.degreeCelsius()),
+                        "weatherHumidity": (sample.metadata?[HKMetadataKeyWeatherHumidity] as? HKQuantity)?.doubleValue(for: HKUnit.percent()),
+                        "averageSpeed": (sample.metadata?[HKMetadataKeyAverageSpeed] as? HKQuantity)?.doubleValue(for: HKUnit.meter().unitDivided(by: HKUnit.second())),
+                        "maximumSpeed": (sample.metadata?[HKMetadataKeyMaximumSpeed] as? HKQuantity)?.doubleValue(for: HKUnit.meter().unitDivided(by: HKUnit.second())),
+                        "workoutEvents": sample.workoutEvents?.map {
+                            [
+                                "type": $0.type.rawValue,
+                                "startDate": Int($0.dateInterval.start.timeIntervalSince1970 * 1000),
+                            ]
+                        },
                         "duration": sample.duration,
                         "date_from": Int(sample.startDate.timeIntervalSince1970 * 1000),
                         "date_to": Int(sample.endDate.timeIntervalSince1970 * 1000),
