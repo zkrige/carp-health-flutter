@@ -592,52 +592,67 @@ class HealthDataReader(
             )
         }
 
+        val grantedPermissions =
+            healthConnectClient.permissionController.getGrantedPermissions()
+        val canReadDistance =
+            grantedPermissions.contains(HealthPermission.getReadPermission(DistanceRecord::class))
+        val canReadEnergyBurned =
+            grantedPermissions.contains(HealthPermission.getReadPermission(TotalCaloriesBurnedRecord::class))
+        val canReadSteps =
+            grantedPermissions.contains(HealthPermission.getReadPermission(StepsRecord::class))
+
         for (rec in filteredRecords) {
             val record = rec as ExerciseSessionRecord
             
             // Get distance data
-            val distanceRequest = healthConnectClient.readRecords(
-                ReadRecordsRequest(
-                    recordType = DistanceRecord::class,
-                    timeRangeFilter = TimeRangeFilter.between(
-                        record.startTime,
-                        record.endTime,
-                    ),
-                ),
-            )
             var totalDistance = 0.0
-            for (distanceRec in distanceRequest.records) {
-                totalDistance += distanceRec.distance.inMeters
+            if (canReadDistance) {
+                val distanceRequest = healthConnectClient.readRecords(
+                    ReadRecordsRequest(
+                        recordType = DistanceRecord::class,
+                        timeRangeFilter = TimeRangeFilter.between(
+                            record.startTime,
+                            record.endTime,
+                        ),
+                    ),
+                )
+                for (distanceRec in distanceRequest.records) {
+                    totalDistance += distanceRec.distance.inMeters
+                }
             }
 
             // Get energy burned data
-            val energyBurnedRequest = healthConnectClient.readRecords(
-                ReadRecordsRequest(
-                    recordType = TotalCaloriesBurnedRecord::class,
-                    timeRangeFilter = TimeRangeFilter.between(
-                        record.startTime,
-                        record.endTime,
-                    ),
-                ),
-            )
             var totalEnergyBurned = 0.0
-            for (energyBurnedRec in energyBurnedRequest.records) {
-                totalEnergyBurned += energyBurnedRec.energy.inKilocalories
+            if (canReadEnergyBurned) {
+                val energyBurnedRequest = healthConnectClient.readRecords(
+                    ReadRecordsRequest(
+                        recordType = TotalCaloriesBurnedRecord::class,
+                        timeRangeFilter = TimeRangeFilter.between(
+                            record.startTime,
+                            record.endTime,
+                        ),
+                    ),
+                )
+                for (energyBurnedRec in energyBurnedRequest.records) {
+                    totalEnergyBurned += energyBurnedRec.energy.inKilocalories
+                }
             }
 
             // Get steps data
-            val stepRequest = healthConnectClient.readRecords(
-                ReadRecordsRequest(
-                    recordType = StepsRecord::class,
-                    timeRangeFilter = TimeRangeFilter.between(
-                        record.startTime,
-                        record.endTime
-                    ),
-                ),
-            )
             var totalSteps = 0.0
-            for (stepRec in stepRequest.records) {
-                totalSteps += stepRec.count
+            if (canReadSteps) {
+                val stepRequest = healthConnectClient.readRecords(
+                    ReadRecordsRequest(
+                        recordType = StepsRecord::class,
+                        timeRangeFilter = TimeRangeFilter.between(
+                            record.startTime,
+                            record.endTime
+                        ),
+                    ),
+                )
+                for (stepRec in stepRequest.records) {
+                    totalSteps += stepRec.count
+                }
             }
 
             // Add final datapoint
