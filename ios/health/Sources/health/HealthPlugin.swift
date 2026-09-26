@@ -342,9 +342,7 @@ public class HealthPlugin: NSObject, FlutterPlugin {
         unitDict[HealthConstants.MILLIGRAM_PER_DECILITER] = HKUnit(from: "mg/dL")
         unitDict[HealthConstants.METER_PER_SECOND] = HKUnit(from: "m/s")
         unitDict[HealthConstants.MILLILITER_PER_KILOGRAM_PER_MINUTE] = HKUnit(from: "ml/kg*min")
-        if #available(iOS 16.0, *) {
-            unitDict[HealthConstants.WATT] = HKUnit.watt()
-        }
+        unitDict[HealthConstants.WATT] = HKUnit.watt()
         unitDict[HealthConstants.COUNT_PER_MINUTE] = HKUnit(from: "count/min")
         unitDict[HealthConstants.LITER_PER_MINUTE] = HKUnit.liter().unitDivided(by: HKUnit.minute())
         unitDict[HealthConstants.KILOCALORIE_PER_HOUR_KILOGRAM] = HKUnit.kilocalorie().unitDivided(by: HKUnit.gramUnit(with: .kilo).unitMultiplied(by: HKUnit.hour()))

@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "health",
     platforms: [
-        .iOS("15.0")
+        .iOS("16.0")
     ],
     products: [
         .library(name: "health", targets: ["health"])
@@ -19,6 +19,9 @@ let package = Package(
             name: "health",
             dependencies: [
                 .product(name: "FlutterFramework", package: "FlutterFramework")
+            ],
+            linkerSettings: [
+                .linkedFramework("HealthKit")
             ]
         )
     ]
