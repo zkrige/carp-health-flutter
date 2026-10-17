@@ -1,3 +1,8 @@
+## Unreleased (fork)
+
+* Android: Fix workout reads failing with a `SecurityException` when `DistanceRecord`, `TotalCaloriesBurnedRecord` or `StepsRecord` read access is not granted; those totals are now `null`
+* iOS: Raise the minimum deployment target to 16.0. This fork calls `HKUnit.watt()`, which is iOS 16+; CocoaPods consumers hid the mismatch by forcing `IPHONEOS_DEPLOYMENT_TARGET` in a post_install hook, but Swift Package Manager honours the declared platform.
+
 ## 13.3.2
 
 * Write data now returns UUID of records - PR [#448](https://github.com/carp-dk/carp-health-flutter/pull/448)
