@@ -14,8 +14,9 @@ Wrapper for Apple's HealthKit on iOS and Google's Health Connect on Android.
   s.source           = { :path => '.' }
   s.source_files = 'health/Sources/health/**/*.swift'
   s.dependency 'Flutter'
+  s.frameworks = 'HealthKit'
 
-  s.ios.deployment_target = '15.0'
+  s.ios.deployment_target = '16.0'
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
