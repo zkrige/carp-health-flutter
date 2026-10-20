@@ -33,7 +33,7 @@ class HKBackgroundDeliveryWorker {
             return
         }
 
-        let engine = FlutterEngine(name: "health.bgdelivery", project: nil, allowHeadlessExecution: true)
+        let engine = FlutterEngine(name: "health.bgdelivery", project: HealthPlugin.dartProject, allowHeadlessExecution: true)
         flutterEngine = engine
 
         engine.run(withEntrypoint: info.callbackName, libraryURI: info.callbackLibraryPath)

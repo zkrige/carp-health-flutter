@@ -26,6 +26,13 @@ public class HealthPlugin: NSObject, FlutterPlugin {
         pluginRegistrantCallback = cb
     }
 
+    /// The `FlutterDartProject` the host app created at launch, used by the background delivery engine instead of a new one. Call `HealthPlugin.setDartProject(_:)` from `AppDelegate` to opt in; when unset the engine creates its own project.
+    static var dartProject: FlutterDartProject?
+
+    @objc public static func setDartProject(_ project: FlutterDartProject) {
+        dartProject = project
+    }
+
     /// Service classes
     private lazy var healthDataReader: HealthDataReader = .init(
         healthStore: healthStore,
