@@ -26,6 +26,12 @@ public class HealthPlugin: NSObject, FlutterPlugin {
         pluginRegistrantCallback = cb
     }
 
+    static var dartProject: FlutterDartProject?
+
+    @objc public static func setDartProject(_ project: FlutterDartProject) {
+        dartProject = project
+    }
+
     /// Service classes
     private lazy var healthDataReader: HealthDataReader = .init(
         healthStore: healthStore,
